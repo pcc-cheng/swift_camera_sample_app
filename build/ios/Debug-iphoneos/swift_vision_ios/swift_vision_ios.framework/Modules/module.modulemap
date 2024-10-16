@@ -1,0 +1,11 @@
+framework module swift_vision_ios {
+  umbrella header "swift_vision_ios-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module swift_vision_ios.Swift {
+  header "swift_vision_ios-Swift.h"
+  requires objc
+}

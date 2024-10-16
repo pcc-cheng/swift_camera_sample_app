@@ -1,0 +1,613 @@
+<html>
+
+<head>
+  <title>General Questionnaire</title>
+  <base href="./">
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+</head>
+
+<body>
+  <div id="lforms-form">
+    <div id="questionnaireFormContainer"></div>
+  </div>
+  <div class="modal" id="smDialogContainer" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="smModalTitle"></h3>
+          <span class="close" id="smCloseModalBtn" onclick="closeDialog()">&times;</span>
+        </div>
+        <div class="modal-body" id="smDialogBody"></div>
+        <div class="modal-footer">
+            <button class="confirm-button" id="confirmBtn" type="button" onclick="closeDialog()">OK</button>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    var editMode = false;
+    var isSummary = false;
+    var intervalId = null; // variable to use with the interval detecting the summary height
+    var newOrderDescription = null;
+    var questionCodes = {
+      bodyPicker: 'bodyPicker',
+      woundCareOrderPicker: 'woundCareOrderPicker',
+    };
+    var newOrderValue = null;
+    var newBodyLocationValue = null;
+    var displayErrors = false;
+    window.onload = function () {
+      LForms.Util.setFHIRContext();
+      dataEntryPoints = undefined;
+      rulesEngineResponse = undefined;
+      loadGeneralQuestionnaire();
+    };
+  </script>
+
+  <script>
+    /**
+     * Method to handle message with the flutter web app
+     */
+    window.parent.addEventListener("message", handleMessage, false);
+    function handleMessage(e) {
+      if (isSummary) return;
+      try {
+        if (String(e.data).includes("showGeneralQuestionnaireQR")) {
+          showGeneralQuestionnaireQR();
+        } else if (String(e.data).includes("toggleEdit")) {
+          var data = JSON.parse(e.data);
+          toggleEdit(data["toggleEdit"]);
+        } else if (String(e.data).includes("setSmartTissueData")) {
+          var data = JSON.parse(e.data);
+          setSmartTissueData(data["setSmartTissueData"]);
+        } else if (String(e.data).includes("setBodyLocationData")) {
+          var data = JSON.parse(e.data);
+          setBodyLocationData(data["setBodyLocationData"]); 
+        } else if (String(e.data).includes("setOrder")) {
+          var data = JSON.parse(e.data);
+          setOrder(data["setOrder"]);
+        } else if (String(e.data).includes("setWoundMeasureData")) {
+          var data = JSON.parse(e.data);
+          setWoundMeasureData(data["setWoundMeasureData"]);
+        } else if (String(e.data).includes("setUnderminingData")) {
+          var data = JSON.parse(e.data);
+          setUnderminingData(data["setUnderminingData"]);
+        } else if (String(e.data).includes("setDataEntryPoints")) {
+          var data = JSON.parse(e.data);
+          var entryPoints = data["setDataEntryPoints"];
+          setDataEntryPoints(entryPoints);
+        } else if (String(e.data).includes("setQuestionnaireWithData")) {
+          var data = JSON.parse(e.data);
+          jsonData = data["setQuestionnaireWithData"];
+          setQuestionnaireWithData(
+            jsonData["questionnaire"],
+            jsonData["response"]
+          );
+        } else if (String(e.data).includes("setQuestionnaire")) {
+          var data = JSON.parse(e.data);
+          var initialQuestionnaire = data["setQuestionnaire"];
+          setQuestionnaire(initialQuestionnaire);
+        } else if (String(e.data).includes("setRulesEngineResponse")) {
+          var errorsDataToSet = data["setRulesEngineResponse"];
+          setRulesEngineResponse(errorsDataToSet);
+        } else if (String(e.data).includes("signQuestionnaire")) {
+          signQuestionnaire();
+        } else if (String(e.data).includes("showEvaluationSummary")){
+          var data = JSON.parse(e.data);
+          jsonData = data["showEvaluationSummary"];
+          showEvaluationSummary(
+            jsonData["questionnaire"],
+            jsonData["response"]
+          );
+        } else if (String(e.data).includes("newOrder")){
+          var data = JSON.parse(e.data);
+          setInitialDescription(data["description"]);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+      /**
+       * Get FHIR version from the version list
+       */
+      function getFHIRVersion() {
+        let fhirVersion = document.getElementById("fhirVersion");
+
+        let version = fhirVersion.value;
+        if (!version) throw "Please select a FHIR version";
+        return version;
+      }
+
+      /**
+       * Get FHIR context from the global object LForms
+       */
+      function getFHIR() {
+        return LForms.FHIR[getFHIRVersion()];
+      }
+
+      function getMessage(message) {
+        if (messageHandler) {
+          messageHandler.postMessage(message);
+        }
+      }
+
+      function setSmartTissueData(smartTissueData) {
+        SmartTissueService.setSmartTissue(smartTissueData);
+      }
+
+      function setBodyLocationData(bodyLocationData) {
+        BodyLocationService.setBodyLocation(bodyLocationData);
+        LForms.Util.getFormData();
+      }
+
+      function setOrder(woundCareOrderData) {
+        WoundCareOrderService.setOrder(woundCareOrderData);
+        LForms.Util.getFormData();
+      }
+
+      function setWoundMeasureData(woundMeasureData) {
+        WoundMeasureService.setWoundMeasure(woundMeasureData);
+      }
+
+      function setUnderminingData(UnderminingData) {
+        UnderminingService.setUndermining(UnderminingData);
+      }
+
+      function setDataEntryPoints(entryPoints) {
+        dataEntryPoints = entryPoints;
+      }
+
+      function setQuestionnaire(questionnaire) {
+        if (dataEntryPoints) {
+          setQuestionnaireWithData(questionnaire, questionnaire);
+        } else {
+          var json = JSON.parse(questionnaire);
+          reviewAndSetScoringType(json);
+          LForms.Util.addFormToPage(json, "questionnaireFormContainer");
+        }
+      }
+
+      function setQuestionnaireWithData(questionnaire, questionnaireResponse) {
+        var json = JSON.parse(questionnaire);
+        var jsonResponse = JSON.parse(questionnaireResponse);
+        reviewAndSetValuesForCustomComponents(json, jsonResponse);
+        reviewAndSetScoringType(json);
+        // Convert FHIR Questionnaire to LForms format
+        var lformQuestionnaire = LForms.Util.convertFHIRQuestionnaireToLForms(
+          json,
+          "R4"
+        );
+        // Merge QuestoinnaireResponse
+        var formWithUserData = LForms.Util.mergeFHIRDataIntoLForms(
+          "QuestionnaireResponse",
+          jsonResponse,
+          lformQuestionnaire,
+          "R4"
+        );
+
+        setTimeout(() => {
+          var scoringTypes = [];
+          QuestionnaireDataService.getQuestionnaireData().subscribe(
+            (data) => 
+            {
+              if(data && data.scoringTypes){
+                scoringTypes = data.scoringTypes;
+              }
+            }
+          );
+          const jsonQuestionnaire = LForms.Util.getFormData();
+          for (var scoringType of scoringTypes) {
+            if(scoringType){
+              if(scoringType?.toLowerCase() === "push") {
+                // Call to set the Questionnaire into the PushScoreService
+                PushScoreService.setQuestionnaireResponse(formWithUserData);
+              } else if(scoringType?.toLowerCase() === "bwat") {
+                // Call to set the Questionnaire into the BwatScoreService
+                BwatScoreService.setQuestionnaireResponse(formWithUserData);
+              }
+            }
+          }
+          // Call to set the Questionnaire into the CognitivelyImpairedPainService
+          CognitivelyImpairedPainService.setQuestionnaireResponse(formWithUserData);
+          // Call to set the values of the data entry points into the formWithUserData
+          formWithUserData = PrePopulateService.prePopulateQuestionnaire(formWithUserData, dataEntryPoints);
+
+          // Add the form to the page
+          LForms.Util.addFormToPage(
+            formWithUserData,
+            "questionnaireFormContainer"
+            );
+        });
+      }
+
+      /**
+       * Sets the view to "Evaluation Summary" and sends message to flutter to set the height for the view
+       * return void
+       **/
+      function showEvaluationSummary(questionnaire, questionnaireResponse) {
+        SmService.setIsEvaluationSummaryView(true);
+        setQuestionnaireWithData(questionnaire, questionnaireResponse);
+        isSummary = true;
+        sendClientHeight();
+      }
+      
+      /**
+       * Sends to flutter the height so it can display the summary correctly;
+       * return void;
+       **/
+      function sendClientHeight(){
+        if(!intervalId){
+          var count = 0;
+          var intervalToRefresh = 100;
+          var amountToRetries = 5;
+          // Tries to find the lform to get the height and if it's not, retries in intervalToRefresh
+          // until the amountToRetries completes;
+          intervalId = setInterval(() => {
+            var height = document.getElementById('lforms-form').clientHeight;
+            if(height > 0){
+              document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+              sendMessageToFlutter('height', height);
+              clearInterval(intervalId);
+              intervalId = null;
+            } else if (count > amountToRetries){
+              clearInterval(intervalId);
+              intervalId = null;
+            }
+            count ++;
+          }, intervalToRefresh);
+        }
+      }
+
+      function showPatientInfoQR() {
+        var qr = LForms.Util.getFormFHIRData(
+          "QuestionnaireResponse",
+          "R4",
+          patientInformationFormContainer
+        );
+        if (showPatientInfoQRMessage) {
+          showPatientInfoQRMessage.postMessage(JSON.stringify(qr, null, 2));
+        }
+      }
+
+      function showBodySiteQR() {
+        var qr = LForms.Util.getFormFHIRData(
+          "QuestionnaireResponse",
+          "R4",
+          bodySitePickerFormContainer
+        );
+        if (showBodySiteQRMessage) {
+          showBodySiteQRMessage.postMessage(JSON.stringify(qr, null, 2));
+        }
+      }
+
+      /**
+       * Method to toggle edit mode the inputs will be disabled when edit mode is false
+       */
+      function toggleEdit(isEditMode) {
+        editMode = isEditMode;
+        inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].disabled = editMode;
+        }
+      }
+
+      /**
+       * Method to show the Questionnaire Response of the general questionnaire
+       * and Send message to flutter when Save button is tapped
+       */
+      function showGeneralQuestionnaireQR() {
+        sendMessageToFlutter("save");
+      }
+
+      /**
+       * Method to send message to flutter
+       * @param event The event name "save", "change", "pushScoreChanged", "sign", "bwatScoreChanged" or "height"
+       * @param qr The questionnaire response
+       */
+      function sendMessageToFlutter(event, item) {
+        try {
+          var qr = LForms.Util.getFormFHIRData(
+          "QuestionnaireResponse",
+          "R4",
+          questionnaireFormContainer
+          );
+        } catch (error) {
+          var qr = null;
+        }
+
+        const jsonContract = {
+          event: event,
+          questionnaireResponse: qr,
+          isReadyToSign: isQuestionnaireSignable()
+        };
+
+        if(event === 'height'){
+          jsonContract.height = item;
+        } else {
+          if (item){
+            if(event === "pushScoreChanged") {
+              jsonContract.pushScore = item?.pushScore;
+            }
+            if(event === "change") {
+              jsonContract.linkId = item?.linkId;
+              jsonContract.value = item?.value;
+              jsonContract.previousValue = item?.previousValue;
+            }
+            if(event === "bwatScoreChanged") {
+              jsonContract.watScore = item?.bwatScore;
+            }
+          }
+        }
+        var scoringTypes = [];
+        QuestionnaireDataService.getQuestionnaireData().subscribe(
+            (data) => 
+            {
+              if(data && data.scoringTypes){
+                scoringTypes = data.scoringTypes;
+              }
+            }
+          );
+        const jsonQuestionnaire = LForms.Util.getFormData();
+        for (var scoringType of scoringTypes) {
+          if(scoringType){
+            if(scoringType.toLowerCase() === "push") {
+              // Call to set the Questionnaire into the PushScoreService
+              PushScoreService.setQuestionnaireResponse(jsonQuestionnaire);
+            } else if(scoringType.toLowerCase() === "bwat") {
+              // Call to set the Questionnaire into the BwatScoreService
+              BwatScoreService.setQuestionnaireResponse(jsonQuestionnaire);
+            }
+          }
+        }
+        // Call to set the Questionnaire into the CognitivelyImpairedPainService
+        CognitivelyImpairedPainService.setQuestionnaireResponse(jsonQuestionnaire);
+
+        if (event !== "") {
+          try {
+            // MOBILE
+            if (showGeneralQuestionnaireQRMessage) {
+              showGeneralQuestionnaireQRMessage.postMessage(
+                JSON.stringify(jsonContract, null, 2)
+              );
+            }
+          } catch (e) {
+            // WEB
+            if (window.parent) {
+              window.parent.postMessage(
+                JSON.stringify(jsonContract, null, 2),
+                "*"
+              );
+            }
+          }
+        }
+      }
+
+      /**
+       * Method to load the general questionnaire when the page is loaded and not comming data from the flutter app
+       */
+      function loadGeneralQuestionnaire() {
+        LForms.Util.addFormToPage(
+          generalQuestionnaire,
+          "questionnaireFormContainer"
+        );
+      }
+
+      /**
+       * Method to load the general questionnaire in readonly mode when the page is loaded and not comming data from the flutter app
+       */
+      function loadGeneralQuestionnaireReadonly() {
+        var qr = LForms.Util.getFormFHIRData(
+          "QuestionnaireResponse",
+          "R4",
+          questionnaireFormContainer
+        );
+        // Convert FHIR Questionnaire to LForms format
+        var lformsQ = LForms.Util.convertFHIRQuestionnaireToLForms(
+          questionnaireReadonly,
+          "R4"
+        );
+        // Merge QuestoinnaireResponse
+        var formWithUserData = LForms.Util.mergeFHIRDataIntoLForms(
+          "QuestionnaireResponse",
+          qr,
+          lformsQ,
+          "R4"
+        );
+
+        // Add the form to the page
+        LForms.Util.addFormToPage(formWithUserData, questionnaireFormContainer);
+      }
+
+      /**
+       * Sets the info returned from the rulesEngine to flutter
+       * @param rulesEngineData: RulesEngineData[]
+       */
+      function setRulesEngineResponse(rulesEngineData) {
+        rulesEngineResponse = rulesEngineData;
+      }
+
+      /**
+       * Returns the data obteined from the rules engine
+       * @returns RulesEngineData[]
+       */
+      function getRulesEngineResponseData() {
+        rulesEngineResponse = [
+          {
+            error: "Example of an error description",
+            code: "woundCareProvided",
+          },
+        ];
+        // TODO: Get the data from the flutter app to fill the errors data
+        return rulesEngineResponse;
+      }
+
+    /**
+     * If there is no error in the form, send a message to flutter to sign the questionnaire
+     * if there is some errors, show them in a modal dialog
+     */
+     function signQuestionnaire() {
+       if(isQuestionnaireSignable()){
+        displayErrors = false;
+        sendMessageToFlutter('sign');
+      } else {
+        displayErrors = true;
+        let htmlToAddToTheBody = '<ul>';
+        document.getElementById("smModalTitle").innerHTML = "Complete required questions to sign";
+        if(shouldModifyOrder){
+          htmlToAddToTheBody += '<li>Review and modify Wound Care Provided</li>';
+        }
+        if(LForms.Util.checkValidity()){
+          htmlToAddToTheBody += getErrorsListMessage(LForms.Util.checkValidity());
+        } 
+        htmlToAddToTheBody += '</ul>';
+        
+        document.getElementById("smDialogBody").innerHTML = htmlToAddToTheBody;      
+        document.getElementById("smDialogContainer").style.display = "flex";
+        $("body").addClass("modal-open");
+      }
+    }
+
+    // Check if we get a message from flutter that says the order is new && the initial description has been modified 
+    function isQuestionnaireSignable(){
+      const orderCode = 'wound-care-order'; // #TODO: Confirm this will be the code for the description
+      const orderUpdatedByUser = findValueCodeForQuestionCode(LForms?.Util?.getUserData(false, true, true, true)?.itemsData, orderCode)
+      shouldModifyOrder = isNewOrder() && newOrderDescription == orderUpdatedByUser;
+      return (!LForms.Util.checkValidity() && !shouldModifyOrder);
+    }
+
+    function closeDialog(){
+      $("body").removeClass("modal-open");
+      document.getElementById('smDialogContainer').style.display = "none";
+    }
+
+    function getErrorsListMessage(errorsList) {
+      const msg = errorsList.reduce((message, error) => {
+        const errorMessage = error.endsWith('requires a value')
+          ? error.replace('requires a value', '')
+          : error;
+        return message + `<li>${errorMessage}</li>`;
+      }, '');
+
+      return msg;
+    }
+
+    function setInitialDescription(initialDescription){
+      newOrderDescription = initialDescription;
+    }
+
+    function isNewOrder(){
+      return !!newOrderDescription;
+    }
+
+    function findValueCodeForQuestionCode(items, questionCode){
+      for (const item of items) {
+        if (item.questionCode === questionCode) {
+          return item.value?.text ?? item.value;
+        }
+        if (item.items && item.items.length > 0) {
+          const value = this.findValueCodeForQuestionCode(
+            item.items,
+            questionCode
+          ); // Recursive call to review items inside an item
+          if (value) {
+            return value;
+          }
+        }
+      }
+      return ''; // Return empty string if value is not found
+    }
+
+    function findLinkIdForCode(items, questionCode){
+      for (const item of items) {
+        if (item.code && item.code[0].code === questionCode) {
+          return item.linkId ?? item.value;
+        }
+        if (item.item && item.item.length > 0) {
+          const value = this.findLinkIdForCode(
+            item.item,
+            questionCode
+          ); // Recursive call to review items inside an item
+          if (value) {
+            return value;
+          }
+        }
+      }
+      return ''; // Return empty string if value is not found
+    }
+
+    function findValueForLinkId(items, linkId){
+      for (const item of items) {
+        if (item.linkId === linkId) {
+          return item.answer[0]?.valueString ?? item.value;
+        }
+        if (item.item && item.item.length > 0) {
+          const value = this.findValueForLinkId(
+            item.item,
+            linkId
+          ); // Recursive call to review items inside an item
+          if (value) {
+            return value;
+          }
+        }
+      }
+      return ''; // Return empty string if value is not found
+    }
+    
+    function reviewAndSetValuesForCustomComponents(json, jsonResponse) {
+      // Review the values for the custom components
+      // Body Location and Wound Care Order
+      if (json && jsonResponse) {
+        var linkIdForBodyPicker = findLinkIdForCode(json.item, questionCodes.bodyPicker);
+        var linkIdForWoundCareOrder = findLinkIdForCode(json.item, questionCodes.woundCareOrderPicker);
+        if(linkIdForBodyPicker && linkIdForWoundCareOrder) {
+          newBodyLocationValue = findValueForLinkId(jsonResponse.item, linkIdForBodyPicker);
+          var blSplit = newBodyLocationValue.split(', ');
+          setBodyLocationData({ "location": blSplit[0], "sublocation": "", "orientation": blSplit[1] });
+          newOrderValue = findValueForLinkId(jsonResponse.item, linkIdForWoundCareOrder);
+          setOrder({ "date": newOrderValue, "description": "" });
+        }
+      }
+    }
+
+    function isFormOnEditMode() {
+      return editMode;
+    }
+
+    function showErrors() {
+      return displayErrors;
+    }
+
+    function setQuestionnaireData(questionnaireData) {
+      QuestionnaireDataService.setQuestionnaireData(questionnaireData);
+    }
+
+    function reviewAndSetScoringType(jsonQuestionnaire) {
+      var extensions = jsonQuestionnaire.extension;
+      var scoringTypes = [];
+      if(extensions){
+      for (var extension of extensions) {
+        const url = extension.url;
+        if (url.includes('/scoringType')) {
+          scoringTypes.push(extension.valueString);
+        }
+      }
+      }
+      // Call to set the ScoringTypes into the QuestionnaireDataService
+      QuestionnaireDataService.setQuestionnaireData({ "scoringTypes": scoringTypes });
+    }
+
+  </script>
+  <!-- Importing assets that contains the json Data for initial questionnaires -->
+  <script src="./generalQuestionnaire.js"></script>
+  <script src="./questionnaireReadonly.js"></script>
+  <!-- ES2017 files of the LHC-Forms web component -->
+  <link href="./styles.css" media="screen" rel="stylesheet">
+  <link href="./questionnaire-style.css" media="screen" rel="stylesheet">
+  <script src="./zone.min.js" defer="true"></script>
+  <script src="./main.js" defer="true"></script>
+  <script src="./lhc-forms.js" defer="true"></script>
+  <script src="./lformsFHIRAll.min.js" defer="true"></script>
+</body>
+
+</html>

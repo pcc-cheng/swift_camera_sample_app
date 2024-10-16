@@ -1,0 +1,978 @@
+{
+    "item": [
+        {
+            "item": [
+                {
+                    "item": [
+                        {
+                            "type": "choice",
+                            "linkId": "7782387263300",
+                            "text": "Laterality",
+                            "enableWhen": [
+                                {
+                                    "question": "2656900811285",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Rear Head"
+                                    }
+                                },
+                                {
+                                    "question": "2656900811285",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Frontal"
+                                    }
+                                },
+                                {
+                                    "question": "2656900811285",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Rear Scalp"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Left"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Right"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Medial"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lateral"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Middle"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Inferior"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Superior"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "644611409178",
+                            "text": "Frontal",
+                            "enableWhen": [
+                                {
+                                    "question": "2656900811285",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Frontal"
+                                    }
+                                }
+                            ],
+                            "required": true,
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Scalp"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Parietal"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Temporal"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "2959244922648",
+                            "text": "Face",
+                            "enableWhen": [
+                                {
+                                    "question": "2656900811285",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Face"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Forehead"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Eye"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Eyelid"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Nose"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Chin"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Cheek"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Mouth"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lip - Upper"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lip - Lower"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Jaw"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "812214871136",
+                            "text": "Ear",
+                            "enableWhen": [
+                                {
+                                    "question": "2656900811285",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Ear"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Right"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Right Earlobe"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Right Pinna (Outer Ear)"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Right Temple"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Right"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Right Earlobe"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Right Pinna (Outer Ear)"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Left"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Left Earlobe"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Left Pinna (Outer Ear)"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Left"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Left Earlobe"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Left Pinna (Outer Ear)"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "8027493874696",
+                            "text": "Ear Laterality",
+                            "enableWhen": [
+                                {
+                                    "question": "812214871136",
+                                    "operator": "exists",
+                                    "answerBoolean": true
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Medial"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lateral"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Middle"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Inferior"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Superior"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "7381191076088",
+                            "text": "Rear Head",
+                            "enableWhen": [
+                                {
+                                    "question": "2656900811285",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Rear Head"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Occipital"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Parietal"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Temporal"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "5658603848255",
+                            "text": "Rear Scalp",
+                            "enableWhen": [
+                                {
+                                    "question": "2656900811285",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Rear Scalp"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Scalp"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Parietal"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "choice",
+                    "linkId": "2656900811285",
+                    "text": "Head",
+                    "enableWhen": [
+                        {
+                            "question": "/39111-0",
+                            "operator": "=",
+                            "answerCoding": {
+                                "system": "http://loinc.org",
+                                "code": "LA18116-6",
+                                "display": "Head"
+                            }
+                        }
+                    ],
+                    "required": false,
+                    "answerOption": [
+                        {
+                            "valueCoding": {
+                                "display": "Frontal"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Face"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Ear"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Neck"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Scalp"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Rear Head"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Rear Scalp"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "item": [
+                        {
+                            "type": "choice",
+                            "linkId": "9048493573054",
+                            "text": "Rear Neck",
+                            "enableWhen": [
+                                {
+                                    "question": "1716583718294",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Rear Neck"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Neck"
+                                    }
+                                }
+                            ],
+                            "initial": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Rear Neck"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "4056495034429",
+                            "text": "Front Neck",
+                            "enableWhen": [
+                                {
+                                    "question": "1716583718294",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Front Neck"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Neck - Trach Site"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Front Neck - Stoma"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Clavicle"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "4899953214028",
+                            "text": "Laterality",
+                            "enableWhen": [
+                                {
+                                    "question": "9048493573054",
+                                    "operator": "exists",
+                                    "answerBoolean": true
+                                },
+                                {
+                                    "question": "4056495034429",
+                                    "operator": "exists",
+                                    "answerBoolean": true
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Left"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Right"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Medial"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lateral"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Middle"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Inferior"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Superior"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "choice",
+                    "linkId": "1716583718294",
+                    "text": "Neck",
+                    "enableWhen": [
+                        {
+                            "question": "/39111-0",
+                            "operator": "=",
+                            "answerCoding": {
+                                "display": "Neck"
+                            }
+                        }
+                    ],
+                    "answerOption": [
+                        {
+                            "valueCoding": {
+                                "display": "Front Neck"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Rear Neck"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "item": [
+                        {
+                            "type": "choice",
+                            "linkId": "8344481361784",
+                            "text": "Right Chest",
+                            "enableWhen": [
+                                {
+                                    "question": "8898216508426",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Right Chest"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Right Chest"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Right Breast"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Right Breast Mastectomy Site"
+                                    }
+                                }
+                            ],
+                            "initial": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Right Chest"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "2829359093471",
+                            "text": "Left Chest",
+                            "enableWhen": [
+                                {
+                                    "question": "8898216508426",
+                                    "operator": "=",
+                                    "answerCoding": {
+                                        "display": "Left Chest"
+                                    }
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Left Chest"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Left Brest"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Left Brest - Mastectomy Site"
+                                    }
+                                }
+                            ],
+                            "initial": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Left Chest"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "choice",
+                            "linkId": "4977527666165",
+                            "text": "Laterality",
+                            "enableWhen": [
+                                {
+                                    "question": "8344481361784",
+                                    "operator": "exists",
+                                    "answerBoolean": true
+                                },
+                                {
+                                    "question": "2829359093471",
+                                    "operator": "exists",
+                                    "answerBoolean": true
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Medial"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lateral"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Middle"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Inferior"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Superior"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "choice",
+                    "linkId": "8898216508426",
+                    "text": "Chest",
+                    "enableWhen": [
+                        {
+                            "question": "/39111-0",
+                            "operator": "=",
+                            "answerCoding": {
+                                "system": "http://loinc.org",
+                                "code": "LA18111-7",
+                                "display": "Chest"
+                            }
+                        }
+                    ],
+                    "answerOption": [
+                        {
+                            "valueCoding": {
+                                "display": "Right Chest"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Left Chest"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "item": [
+                        {
+                            "type": "choice",
+                            "linkId": "2774305594101",
+                            "text": "Laterality",
+                            "enableWhen": [
+                                {
+                                    "question": "5337439455937",
+                                    "operator": "exists",
+                                    "answerBoolean": true
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Medial"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lateral"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Middle"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Inferior"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Superior"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "choice",
+                    "linkId": "5337439455937",
+                    "text": "Sternum",
+                    "enableWhen": [
+                        {
+                            "question": "/39111-0",
+                            "operator": "=",
+                            "answerCoding": {
+                                "display": "Sternum"
+                            }
+                        }
+                    ],
+                    "answerOption": [
+                        {
+                            "valueCoding": {
+                                "display": "Sternum"
+                            }
+                        }
+                    ],
+                    "initial": [
+                        {
+                            "valueCoding": {
+                                "display": "Sternum"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "item": [
+                        {
+                            "type": "choice",
+                            "linkId": "4047427971876",
+                            "text": "Laterality",
+                            "enableWhen": [
+                                {
+                                    "question": "5291848491931",
+                                    "operator": "exists",
+                                    "answerBoolean": true
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Medial"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lateral"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Middle"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Inferior"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Superior"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "choice",
+                    "linkId": "5291848491931",
+                    "text": "Flank",
+                    "enableWhen": [
+                        {
+                            "question": "/39111-0",
+                            "operator": "=",
+                            "answerCoding": {
+                                "display": "Flank"
+                            }
+                        }
+                    ],
+                    "answerOption": [
+                        {
+                            "valueCoding": {
+                                "display": "Front Right Flank"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Front Left Flank"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "item": [
+                        {
+                            "type": "choice",
+                            "linkId": "8139842202849",
+                            "text": "Laterality",
+                            "enableWhen": [
+                                {
+                                    "question": "5290218178016",
+                                    "operator": "exists",
+                                    "answerBoolean": true
+                                }
+                            ],
+                            "answerOption": [
+                                {
+                                    "valueCoding": {
+                                        "display": "Medial"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Lateral"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Middle"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Inferior"
+                                    }
+                                },
+                                {
+                                    "valueCoding": {
+                                        "display": "Superior"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "type": "choice",
+                    "linkId": "5290218178016",
+                    "text": "Intercostal",
+                    "enableWhen": [
+                        {
+                            "question": "/39111-0",
+                            "operator": "=",
+                            "answerCoding": {
+                                "display": "Intercostal"
+                            }
+                        }
+                    ],
+                    "answerOption": [
+                        {
+                            "valueCoding": {
+                                "display": "Right Intercostal"
+                            }
+                        },
+                        {
+                            "valueCoding": {
+                                "display": "Left Intercostal"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "type": "choice",
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/questionnaire-item-control",
+                                "code": "drop-down",
+                                "display": "Drop down"
+                            }
+                        ],
+                        "text": "Drop down"
+                    }
+                }
+            ],
+            "linkId": "/39111-0",
+            "code": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "39111-0",
+                    "display": "Bdy site"
+                }
+            ],
+            "text": "Body Site",
+            "required": false,
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "system": "http://loinc.org",
+                        "code": "LA12706-0",
+                        "display": "Abdomen"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "system": "http://loinc.org",
+                        "code": "LA18111-7",
+                        "display": "Chest"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "system": "http://loinc.org",
+                        "code": "LA18116-6",
+                        "display": "Head"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "system": "http://loinc.org",
+                        "code": "LA16744-7",
+                        "display": "Pelvis"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Neck"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Sternum"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Flank"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Intercostal"
+                    }
+                }
+            ]
+        }
+    ],
+    "resourceType": "Questionnaire",
+    "title": "Swift Body Site Picker",
+    "status": "draft",
+    "id": "31a1c299-dcda-422f-8e77-47558769f1ef"
+}

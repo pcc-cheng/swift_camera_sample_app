@@ -1,0 +1,1 @@
+ /Users/cheng/repositories/swift_sample/.dart_tool/flutter_build/78c0a663b6e5687f82d55124cc0ed324/native_assets.yaml: 
